@@ -1,0 +1,240 @@
+- id: '1689728457817'
+  alias: Update LEAF position
+  description: Convert MQTT lat/long to device tracking
+  trigger:
+  - platform: state
+    entity_id:
+    - sensor.leaf_latitude
+    - sensor.leaf_longitude
+  condition: []
+  action:
+  - service: device_tracker.see
+    data:
+      dev_id: LEAF
+      source_type: gps
+      gps:
+      - '{{ states(''sensor.leaf_latitude'') }}'
+      - '{{ states(''sensor.leaf_longitude'') }}'
+      gps_accuracy: '{{ (states(''sensor.leaf_gps_horiz_dilution'')|float*8) | int
+        }}'
+      battery: '{{ states(''sensor.leaf_soc_dashboard'') | int }}'
+  mode: single
+
+# The MQTT switches will stay 'on' until the 'off' message is sent. Force that when car is turned on
+- id: '1694620931628'
+  alias: 'Leaf Climate disable remote when awake '
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - binary_sensor.leaf_awake
+    to: 'on'
+  - platform: state
+    entity_id:
+    - sensor.leaf_event
+    to: vehicle.on
+  condition: []
+  action:
+  - service: switch.turn_off
+    data: {}
+    target:
+      entity_id: switch.leaf_climate_control
+  mode: single
+
+# Helpful controls for smart plug on charger, entity named switch.leaf_outlet
+# Create input booleans:
+#    input_boolean.leaf_charge_to_100
+#    input_boolean.leaf_charge_to_80
+# Add entity binary_sensor.leaf_needs_charge from template_sensor.yaml (in repo)
+# Create binary_sensor.leaf_ready_to_charge to indicate when you'd like charging to happen normally. Mine is based on the charge port being open, leaf_needs_charge, and solar power availability.
+- id: '1691557870775'
+  alias: Leaf Charge SoC Reached
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - binary_sensor.leaf_needs_charge
+    to: 'off'
+  condition:
+  - condition: state
+    entity_id: input_boolean.leaf_charge_to_100
+    state: 'off'
+  action:
+  - service: switch.turn_off
+    data: {}
+    target:
+      entity_id: switch.leaf_outlet
+  - service: input_boolean.turn_off
+    data: {}
+    target:
+      entity_id: input_boolean.leaf_charge_to_80
+  mode: single
+- id: '1692850497760'
+  alias: Leaf Charge Port Opened
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - binary_sensor.leaf_charge_port_open
+    to: 'on'
+  condition:
+  - condition: or
+    conditions:
+    - condition: and
+      conditions:
+      - condition: numeric_state
+        entity_id: sensor.leaf_soc_dashboard
+        below: 82
+      - condition: state
+        entity_id: input_boolean.leaf_charge_to_80
+        state: 'on'
+    - condition: and
+      conditions:
+      - condition: numeric_state
+        entity_id: sensor.leaf_soc_dashboard
+        below: 100
+      - condition: state
+        entity_id: input_boolean.leaf_charge_to_100
+        state: 'on'
+    - condition: state
+      entity_id: binary_sensor.leaf_ready_to_charge
+      state: 'on'
+  action:
+  - service: switch.turn_on
+    data: {}
+    target:
+      entity_id: switch.leaf_outlet
+  mode: single
+- id: '1692850626900'
+  alias: Leaf Start Charge to 100
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - input_boolean.leaf_charge_to_100
+    to: 'on'
+  condition:
+  - condition: state
+    entity_id: binary_sensor.leaf_charge_port_open
+    state: 'on'
+  action:
+  - service: switch.turn_on
+    data: {}
+    target:
+      entity_id: switch.leaf_outlet
+  mode: single
+- id: '1692850690249'
+  alias: Leaf Charge Ready
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - binary_sensor.leaf_ready_to_charge
+    to: 'on'
+  condition: []
+  action:
+  - service: switch.turn_on
+    data: {}
+    target:
+      entity_id: switch.leaf_outlet
+  mode: single
+- id: '1692850773579'
+  alias: Leaf Charge Unready
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - binary_sensor.leaf_ready_to_charge
+    to: 'off'
+  condition:
+  - condition: and
+    conditions:
+    - condition: state
+      entity_id: input_boolean.leaf_charge_to_80
+      state: 'off'
+    - condition: state
+      state: 'off'
+      entity_id: input_boolean.leaf_charge_to_100
+  action:
+  - service: switch.turn_off
+    data: {}
+    target:
+      entity_id: switch.leaf_outlet
+  mode: single
+- id: '1692850944805'
+  alias: Leaf Charge 100 Percent
+  description: ''
+  trigger:
+  - platform: numeric_state
+    entity_id: sensor.leaf_soc_dashboard
+    above: 99
+  condition: []
+  action:
+  - service: switch.turn_off
+    data: {}
+    target:
+      entity_id: switch.leaf_outlet
+  - service: input_boolean.turn_off
+    data: {}
+    target:
+      entity_id:
+      - input_boolean.leaf_charge_to_80
+      - input_boolean.leaf_charge_to_100
+  mode: single
+- id: '1692852582012'
+  alias: Leaf Start Charge to 80
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - input_boolean.leaf_charge_to_80
+    to: 'on'
+  condition:
+  - condition: state
+    entity_id: binary_sensor.leaf_charge_port_open
+    state: 'on'
+  - condition: state
+    entity_id: binary_sensor.leaf_needs_charge
+    state: 'on'
+  action:
+  - service: switch.turn_on
+    data: {}
+    target:
+      entity_id: switch.leaf_outlet
+  mode: single
+- id: '1692852758300'
+  alias: Leaf Stop Charge to 80
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - input_boolean.leaf_charge_to_80
+    to: 'off'
+  condition: []
+  action:
+  - service: switch.turn_off
+    data: {}
+    target:
+      entity_id: switch.leaf_outlet
+  mode: single
+- id: '1692909311901'
+  alias: Leaf Charge Port Closed
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - binary_sensor.leaf_charge_port_open
+    to: 'off'
+  condition: []
+  action:
+  - service: switch.turn_off
+    data: {}
+    target:
+      entity_id: switch.leaf_outlet
+  - service: input_boolean.turn_off
+    data: {}
+    target:
+      entity_id:
+      - input_boolean.leaf_charge_to_80
+      - input_boolean.leaf_charge_to_100
+  mode: single

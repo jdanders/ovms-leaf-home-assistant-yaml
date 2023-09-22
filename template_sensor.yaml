@@ -1,0 +1,5 @@
+# Set your threshold to whatever you'd like.
+template:
+  - binary_sensor:
+    - name: Leaf Needs Charge
+      state: "{{ states('sensor.leaf_soc_dashboard') | float < 80 }}"
