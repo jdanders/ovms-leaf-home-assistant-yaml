@@ -9,12 +9,12 @@
   - entity: binary_sensor.leaf_battery_cell_3_alarm
   - entity: binary_sensor.leaf_currently_charging
   - entity: binary_sensor.leaf_charging_pilot_signal_present
-  - entity: binary_sensor.leaf_charge_port_open
-  - entity: binary_sensor.leaf_front_left_door_open
-  - entity: binary_sensor.leaf_front_right_door_open
-  - entity: binary_sensor.leaf_rear_left_door_open
-  - entity: binary_sensor.leaf_rear_right_door_open
-  - entity: binary_sensor.leaf_trunk_open
+  - entity: binary_sensor.leaf_charge_port
+  - entity: binary_sensor.leaf_front_left_door
+  - entity: binary_sensor.leaf_front_right_door
+  - entity: binary_sensor.leaf_rear_left_door
+  - entity: binary_sensor.leaf_rear_right_door
+  - entity: binary_sensor.leaf_trunk
   - entity: binary_sensor.leaf_awake
   - entity: binary_sensor.leaf_12v_battery_charging
   - entity: binary_sensor.leaf_cooling_state

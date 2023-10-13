@@ -82,43 +82,43 @@ mqtt:
   # NO LEAF #  payload_off: 'no'
 
   - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/d/cp' #   yes
-    name: 'Leaf Charge Port Open'
+    name: 'Leaf Charge Port'
     payload_on: 'yes'
     payload_off: 'no'
     device_class: 'opening'
 
   - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/d/fl' #   no
-    name: 'Leaf Front Left Door Open'
+    name: 'Leaf Front Left Door'
     payload_on: 'yes'
     payload_off: 'no'
     device_class: 'door'
 
   - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/d/fr' #   no
-    name: 'Leaf Front Right Door Open'
+    name: 'Leaf Front Right Door'
     payload_on: 'yes'
     payload_off: 'no'
     device_class: 'door'
 
   # NO LEAF #- state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/d/hood' #
-  # NO LEAF #  name: 'Leaf Hood Open'
+  # NO LEAF #  name: 'Leaf Hood'
   # NO LEAF #  payload_on: 'yes'
   # NO LEAF #  payload_off: 'no'
   # NO LEAF #  device_class: 'door'
 
   - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/d/rl' #   no
-    name: 'Leaf Rear Left Door Open'
+    name: 'Leaf Rear Left Door'
     payload_on: 'yes'
     payload_off: 'no'
     device_class: 'door'
 
   - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/d/rr' #   no
-    name: 'Leaf Rear Right Door Open'
+    name: 'Leaf Rear Right Door'
     payload_on: 'yes'
     payload_off: 'no'
     device_class: 'door'
 
   - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/d/trunk' #   no
-    name: 'Leaf Trunk Open'
+    name: 'Leaf Trunk'
     payload_on: 'yes'
     payload_off: 'no'
     device_class: 'door'
