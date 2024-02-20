@@ -2,8 +2,8 @@ mqtt:
   switch:
   - name: Leaf Climate Control
     qos: 1
-    command_topic: "ovms/[mqtt-user]/[CAR-ID]/client/home-assistant/command/1"
-    state_topic: "ovms/[mqtt-user]/[CAR-ID]/client/home-assistant/response/1"
+    command_topic: "ovms/[mqtt-client]/[car-id]/client/home-assistant/command/1"
+    state_topic: "ovms/[mqtt-client]/[car-id]/client/home-assistant/response/1"
     state_on: "Climate Control \non\n"
     state_off: "Climate Control \noff\n"
     payload_on: "climatecontrol on"
@@ -11,8 +11,8 @@ mqtt:
 
   - name: Leaf Charge Override
     qos: 1
-    command_topic: "ovms/[mqtt-user]/[CAR-ID]/client/home-assistant/command/1"
-    state_topic: "ovms/[mqtt-user]/[CAR-ID]/client/home-assistant/response/1"
+    command_topic: "ovms/[mqtt-client]/[car-id]/client/home-assistant/command/1"
+    state_topic: "ovms/[mqtt-client]/[car-id]/client/home-assistant/response/1"
     state_on: "Charge has been started\n"
     state_off: "Charge has been stopped\n"
     payload_on: "charge start"
@@ -21,1376 +21,1546 @@ mqtt:
 
   button:
   - name: Leaf Send Charge Command
-    command_topic: "ovms/[mqtt-user]/[CAR-ID]/client/home-assistant/command/1"
+    command_topic: "ovms/[mqtt-client]/[car-id]/client/home-assistant/command/1"
     payload_press: "charge start"
 
 
   binary_sensor:
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/s/v2/connected' #   yes
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/s/v2/connected' #   yes
     name: 'Leaf V2 Server Connected'
     payload_on: 'yes'
     payload_off: 'no'
     device_class: 'connectivity'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/s/v3/connected' #   yes
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/s/v3/connected' #   yes
     name: 'Leaf V3 Server Connected'
     payload_on: 'yes'
     payload_off: 'no'
     device_class: 'connectivity'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/b/12v/voltage/alert' #
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/b/12v/voltage/alert' #
     name: 'Leaf 12V Voltage Battery Alert'
     payload_on: 'yes'
     payload_off: 'no'
     device_class: 'problem'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/b/c/temp/alert' #   0,0,0
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/b/c/temp/alert' #   0,0,0
     name: 'Leaf Battery Cell 1 Alarm'
     value_template: '{{ value.split(",")[0]|round(0) }}'
     payload_on: '1'
     payload_off: '0'
     device_class: 'problem'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/b/c/temp/alert' #   0,0,0
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/b/c/temp/alert' #   0,0,0
     name: 'Leaf Battery Cell 2 Alarm'
     value_template: '{{ value.split(",")[1]|round(0) }}'
     payload_on: '1'
     payload_off: '0'
     device_class: 'problem'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/b/c/temp/alert' #   0,0,0
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/b/c/temp/alert' #   0,0,0
     name: 'Leaf Battery Cell 3 Alarm'
     value_template: '{{ value.split(",")[2]|round(0) }}'
     payload_on: '1'
     payload_off: '0'
     device_class: 'problem'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/c/charging' #   no
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/c/charging' #   no
     name: 'Leaf Currently Charging'
     payload_on: 'yes'
     payload_off: 'no'
     device_class: 'battery_charging'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/c/pilot' #   yes
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/c/pilot' #   yes
     name: 'Leaf Charging Pilot Signal Present'
     payload_on: 'yes'
     payload_off: 'no'
 
-  # NO LEAF #- state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/c/timermode' #
+  # NO LEAF #- state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/c/timermode' #
   # NO LEAF #  name: 'Leaf Charger Timer Enabled'
   # NO LEAF #  payload_on: 'yes'
   # NO LEAF #  payload_off: 'no'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/d/cp' #   yes
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/d/cp' #   yes
     name: 'Leaf Charge Port'
     payload_on: 'yes'
     payload_off: 'no'
-    device_class: 'opening'
+    device_class: 'door'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/d/fl' #   no
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/d/fl' #   no
     name: 'Leaf Front Left Door'
     payload_on: 'yes'
     payload_off: 'no'
     device_class: 'door'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/d/fr' #   no
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/d/fr' #   no
     name: 'Leaf Front Right Door'
     payload_on: 'yes'
     payload_off: 'no'
     device_class: 'door'
 
-  # NO LEAF #- state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/d/hood' #
+  # NO LEAF #- state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/d/hood' #
   # NO LEAF #  name: 'Leaf Hood'
   # NO LEAF #  payload_on: 'yes'
   # NO LEAF #  payload_off: 'no'
   # NO LEAF #  device_class: 'door'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/d/rl' #   no
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/d/rl' #   no
     name: 'Leaf Rear Left Door'
     payload_on: 'yes'
     payload_off: 'no'
     device_class: 'door'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/d/rr' #   no
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/d/rr' #   no
     name: 'Leaf Rear Right Door'
     payload_on: 'yes'
     payload_off: 'no'
     device_class: 'door'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/d/trunk' #   no
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/d/trunk' #   no
     name: 'Leaf Trunk'
     payload_on: 'yes'
     payload_off: 'no'
     device_class: 'door'
 
-  # NO LEAF #- state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/e/alarm' #
+  # NO LEAF #- state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/e/alarm' #
   # NO LEAF #  name: 'Leaf Alarm Sounding'
   # NO LEAF #  payload_on: 'yes'
   # NO LEAF #  payload_off: 'no'
   # NO LEAF #  device_class: 'problem'
 
-  # NO LEAF #- state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/e/aux12v' #
+  # NO LEAF #- state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/e/aux12v' #
   # NO LEAF #  name: 'Leaf Aux 12V System State'
   # NO LEAF #  payload_on: 'yes'
   # NO LEAF #  payload_off: 'no'
   # NO LEAF #  device_class: 'battery_charging'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/e/awake' #   no
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/e/awake' #   no
     name: 'Leaf Awake'
     payload_on: 'yes'
     payload_off: 'no'
     device_class: 'power'
 
-  # NO LEAF #- state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/e/c/config' #
+  # NO LEAF #- state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/e/c/config' #
   # NO LEAF #  name: 'Leaf ECU in Config State'
   # NO LEAF #  payload_on: 'yes'
   # NO LEAF #  payload_off: 'no'
 
-  # NO LEAF #- state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/e/c/login' #
+  # NO LEAF #- state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/e/c/login' #
   # NO LEAF #  name: 'Leaf Module Logged In ECU'
   # NO LEAF #  payload_on: 'yes'
   # NO LEAF #  payload_off: 'no'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/e/charging12v' #   no
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/e/charging12v' #   no
     name: 'Leaf 12V Battery Charging'
     payload_on: 'yes'
     payload_off: 'no'
     device_class: 'battery_charging'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/e/cooling' #   no
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/e/cooling' #   no
     name: 'Leaf Cooling State'
     payload_on: 'yes'
     payload_off: 'no'
     device_class: 'cold'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/e/handbrake' #   yes
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/e/handbrake' #   yes
     name: 'Leaf Handbrake Engaged'
     payload_on: 'yes'
     payload_off: 'no'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/e/headlights' #   no
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/e/headlights' #   no
     name: 'Leaf Headlight State'
     payload_on: 'yes'
     payload_off: 'no'
     device_class: 'light'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/e/heating' #   no
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/e/heating' #   no
     name: 'Leaf Heating State'
     payload_on: 'yes'
     payload_off: 'no'
     device_class: 'heat'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/e/hvac' #   no
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/e/hvac' #   no
     name: 'Leaf HVAC State'
     payload_on: 'yes'
     payload_off: 'no'
     device_class: 'cold'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/e/locked' #   no
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/e/locked' #   no
     name: 'Leaf Locks Engaged'
     payload_on: 'yes'
     payload_off: 'no'
     device_class: 'lock'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/e/on' #   no
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/e/on' #   no
     name: 'Leaf On'
     payload_on: 'yes'
     payload_off: 'no'
     device_class: 'power'
 
-  # - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/g/generating' # no
+  # - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/g/generating' # no
   #   name: 'Leaf Generating Power'
   #   payload_on: 'yes'
   #   payload_off: 'no'
   #   device_class: 'battery_charging'
   #
-  # - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/g/pilot' #   no
+  # - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/g/pilot' #   no
   #   name: 'Leaf Generating Pilot Signal Present'
   #   payload_on: 'yes'
   #   payload_off: 'no'
 
-  # NO LEAF #- state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/g/timermode' #
+  # NO LEAF #- state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/g/timermode' #
   # NO LEAF #  name: 'Leaf Generating Timermode'
   # NO LEAF #  payload_on: 'yes'
   # NO LEAF #  payload_off: 'no'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/p/gpslock' #   yes
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/p/gpslock' #   yes
     name: 'Leaf Module GPS Lock'
     payload_on: 'yes'
     payload_off: 'no'
     device_class: 'lock'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/xnl/cc/fan/only' #   no
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/xnl/cc/fan/only' #   no
     name: 'Leaf Fan-Only State'
     payload_on: 'yes'
     payload_off: 'no'
     device_class: 'running'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/xnl/cc/remotecool' #   no
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/xnl/cc/remotecool' #   no
     name: 'Leaf Remote Cool State'
     payload_on: 'yes'
     payload_off: 'no'
     device_class: 'cold'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/xnl/cc/remoteheat' #   no
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/xnl/cc/remoteheat' #   no
     name: 'Leaf Remote Heat State'
     payload_on: 'yes'
     payload_off: 'no'
     device_class: 'heat'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/xnl/cc/rqinprogress' #   no
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/xnl/cc/rqinprogress' #   no
     name: 'Leaf RQ In Progress'
     payload_on: 'yes'
     payload_off: 'no'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/xnl/v/b/heatergranted' #   no
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/xnl/v/b/heatergranted' #   no
     name: 'Leaf Heater Granted State'
     payload_on: 'yes'
     payload_off: 'no'
     device_class: 'heat'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/xnl/v/b/heaterpresent' #   yes
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/xnl/v/b/heaterpresent' #   yes
     name: 'Leaf Heater Present'
     payload_on: 'yes'
     payload_off: 'no'
     device_class: 'heat'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/xnl/v/b/heatrequested' #   no
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/xnl/v/b/heatrequested' #   no
     name: 'Leaf Heat Requested'
     payload_on: 'yes'
     payload_off: 'no'
     device_class: 'heat'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/xnl/v/e/hvac/auto' #   no
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/xnl/v/e/hvac/auto' #   no
     name: 'Leaf HVAC Auto State'
     payload_on: 'yes'
     payload_off: 'no'
     device_class: 'cold'
 
-  # NO LEAF #- state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/e/regenbrake' #
+  # NO LEAF #- state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/e/regenbrake' #
   # NO LEAF #  name: 'Leaf Regen Braking'
   # NO LEAF #  payload_on: 'yes'
   # NO LEAF #  payload_off: 'no'
   # NO LEAF #  device_class: 'battery_charging'
 
-  # NO LEAF #- state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/t/alert' #
+  # NO LEAF #- state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/t/alert' #
   # NO LEAF #  name: 'Leaf TPMS Alert 1'
   # NO LEAF #  device_class: 'problem'
 # # NO LEAF #   value_template: '{{ value.split(',')[0]|round(0) }}'
   # NO LEAF #
-  # NO LEAF #- state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/t/alert' #
+  # NO LEAF #- state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/t/alert' #
   # NO LEAF #  name: 'Leaf TPMS Alert 2'
   # NO LEAF #  device_class: 'problem'
 # # NO LEAF #   value_template: '{{ value.split(',')[1]|round(0) }}'
   # NO LEAF #
-  # NO LEAF #- state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/t/alert' #
+  # NO LEAF #- state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/t/alert' #
   # NO LEAF #  name: 'Leaf TPMS Alert 3'
   # NO LEAF #  device_class: 'problem'
 # # NO LEAF #   value_template: '{{ value.split(',')[2]|round(0) }}'
   # NO LEAF #
-  # NO LEAF #- state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/t/alert' #
+  # NO LEAF #- state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/t/alert' #
   # NO LEAF #  name: 'Leaf TPMS Alert 4'
   # NO LEAF #  device_class: 'problem'
 # # NO LEAF #   value_template: '{{ value.split(',')[3]|round(0) }}'
 
 
   sensor:
-  # - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/m/egpio/input' #   0,1,2,3,4,5,6,7,8,9
+  # - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/m/egpio/input' #   0,1,2,3,4,5,6,7,8,9
   #   name: 'Leaf EGPIO Input
   #
-  # - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/m/egpio/monitor' #
+  # - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/m/egpio/monitor' #
   #   name: 'Leaf EGPIO Monitor
   #
-  # - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/m/egpio/output' #   3,4,5,6,7,8,9
+  # - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/m/egpio/output' #   3,4,5,6,7,8,9
   #   name: 'Leaf EGPIO Output'
   #
-  # - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/m/freeram' #   3470900
+  # - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/m/freeram' #   3470900
   #   name: 'Leaf Memory Free
   #   unit_of_measurement: 'B'
   #   icon: 'mdi:memory'
   #
-  # - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/m/hardware' #   OVMS WIFI BLE BT cores=2 rev=ESP32/3; MODEM SIM7600
+  # - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/m/hardware' #   OVMS WIFI BLE BT cores=2 rev=ESP32/3; MODEM SIM7600
   #   name: 'Leaf Hardware Information'
   #
-  # - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/m/monotonic' #   19591Sec
+  # - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/m/monotonic' #   19591Sec
   #   name: 'Leaf Monotonic Timer'
+  #   state_class: 'measurement'
   #   value_template: '{{ (value|float/60)|round(2) }}'
   #   unit_of_measurement: 'min'
   #   #icon: 'mdi:'
   #
-  # - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/m/net/mdm/iccid' #   89490240001766080167
+  # - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/m/net/mdm/iccid' #   89490240001766080167
   #   name: 'Leaf ICCID'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/m/net/mdm/mode' #   LTE,Online
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/m/net/mdm/mode' #   LTE,Online
     name: 'Leaf Modem Mode'
     icon: 'mdi:cellphone-information'
 
-  # - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/m/net/mdm/model' #   LE20B03SIM7600G
+  # - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/m/net/mdm/model' #   LE20B03SIM7600G
   #   name: 'Leaf Modem Model'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/m/net/mdm/netreg' #   RegisteredRoaming
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/m/net/mdm/netreg' #   RegisteredRoaming
     name: 'Leaf Modem Net Mode'
 
-  # - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/m/net/mdm/network' #   T-Mobile Hologram
+  # - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/m/net/mdm/network' #   T-Mobile Hologram
   #   name: 'Leaf Modem Network'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/m/net/mdm/sq' #   -67dBm
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/m/net/mdm/sq' #   -67dBm
     name: 'Leaf Modem Signal Quality'
+    state_class: 'measurement'
     unit_of_measurement: 'dBm'
     icon: 'mdi:signal-cellular-2'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/m/net/provider' #   WLAN-214677
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/m/net/provider' #   WLAN-214677
     name: 'Leaf Network Provider'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/m/net/sq' #   -55dBm
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/m/net/sq' #   -55dBm
     name: 'Leaf Network Signal Quality'
+    state_class: 'measurement'
     unit_of_measurement: 'dBm'
     icon: 'mdi:wifi-strength-2'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/m/net/type' #   wifi
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/m/net/type' #   wifi
     name: 'Leaf Network Type'
     icon: 'mdi:information'
 
-  # - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/m/net/wifi/network' #   WLAN-214677
+  # - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/m/net/wifi/network' #   WLAN-214677
   #   name: 'Leaf Wifi Provider'
   #   value_template: '{{ value|round(2) }}'
   #   icon: 'mdi:information'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/m/net/wifi/sq' #   -55.2dBm
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/m/net/wifi/sq' #   -55.2dBm
     name: 'Leaf Wifi Signal Quality'
+    state_class: 'measurement'
     value_template: '{{ value|round(2) }}'
     unit_of_measurement: 'dBm'
     icon: 'mdi:wifi-strength-2'
 
-  # - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/m/serial' #
+  # - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/m/serial' #
   #   name: 'Leaf Module Serial Number'
+  #   state_class: 'measurement'
   #
-  # - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/m/tasks' #   17
+  # - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/m/tasks' #   17
   #   name: 'Leaf Tasks'
+  #   state_class: 'measurement'
   #
-  # - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/m/time/utc' #   1687474866Sec
+  # - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/m/time/utc' #   1687474866Sec
   #   name: 'Leaf UTC Time'
+  #   state_class: 'measurement'
   #   unit_of_measurement: 's'
   #
-  # - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/m/version' #   3.3.003/ota_0/main (build idf v3.3.4-848-g1ff5e24b1 Sep  1 2022 08:40:30)
+  # - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/m/version' #   3.3.003/ota_0/main (build idf v3.3.4-848-g1ff5e24b1 Sep  1 2022 08:40:30)
   #   name: 'Leaf Module Version'
 
-  # - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/s/v2/peers' #   0
+  # - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/s/v2/peers' #   0
   #   name: 'Leaf V2 Peers'
 
-  # - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/s/v3/peers' #   0
+  # - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/s/v3/peers' #   0
   #   name: 'Leaf V3 Peers'
 
-  # NO LEAF #- state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/b/12v/current' #
+  # NO LEAF #- state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/b/12v/current' #
   # NO LEAF #  name: 'Leaf 12V Battery Current'
+  # NO LEAF #  state_class: 'measurement'
   # NO LEAF #  value_template: '{{ value|round(2) }}'
   # NO LEAF #  unit_of_measurement: 'A'
   # NO LEAF #  icon: 'mdi:current-dc'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/b/12v/voltage' #   12.24V
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/b/12v/voltage' #   12.24V
     name: 'Leaf 12V Battery Level'
+    state_class: 'measurement'
     value_template: '{{ value|round(2) }}'
     unit_of_measurement: 'V'
+    state_class: 'measurement'
     icon: 'mdi:flash-triangle'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/b/12v/voltage/ref' #   12.56V
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/b/12v/voltage/ref' #   12.56V
     name: 'Leaf 12V Battery Reference'
+    state_class: 'measurement'
     value_template: '{{ value|round(2) }}'
     unit_of_measurement: 'V'
     icon: 'mdi:flash-triangle'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/b/c/temp' #   21.624,21.114,21.216°C
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/b/c/temp' #   21.624,21.114,21.216°C
     name: 'Leaf Battery Cell 1 Temperature'
+    state_class: 'measurement'
     value_template: '{{ (value.split(",")[0]|float*9/5+32)|round(2) }}'
     unit_of_measurement: '°F'
     icon: 'mdi:thermometer'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/b/c/temp' #   21.624,21.114,21.216°C
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/b/c/temp' #   21.624,21.114,21.216°C
     name: 'Leaf Battery Cell 2 Temperature'
+    state_class: 'measurement'
     value_template: '{{ (value.split(",")[1]|float*9/5+32)|round(2) }}'
     unit_of_measurement: '°F'
     icon: 'mdi:thermometer'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/b/c/temp' #   21.624,21.114,21.216°C
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/b/c/temp' #   21.624,21.114,21.216°C
     name: 'Leaf Battery Cell 3 Temperature'
+    state_class: 'measurement'
     value_template: '{{ (value.split(",")[2]|float*9/5+32)|round(2) }}'
     unit_of_measurement: '°F'
     icon: 'mdi:thermometer'
 
-  # - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/b/c/temp/dev/max' #   0.31,-0.2,-0.1°C
+  # - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/b/c/temp/dev/max' #   0.31,-0.2,-0.1°C
   #   name: 'Leaf Battery Cell Max Deviations'
+  #   state_class: 'measurement'
   #   value_template: '{{ value|round(2) }}'
   #   unit_of_measurement: '°C'
   #   icon: 'mdi:thermometer'
   #
-  # - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/b/c/temp/max' #   21.624,21.114,21.216°C
+  # - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/b/c/temp/max' #   21.624,21.114,21.216°C
   #   name: 'Leaf Battery Cell Max'
+  #   state_class: 'measurement'
   #   value_template: '{{ value|round(2) }}'
   #   unit_of_measurement: '°C'
   #   icon: 'mdi:thermometer'
   #
-  # - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/b/c/temp/min' #   21.624,21.114,21.216°C
+  # - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/b/c/temp/min' #   21.624,21.114,21.216°C
   #   name: 'Leaf Battery Cell Min'
+  #   state_class: 'measurement'
   #   value_template: '{{ value|round(2) }}'
   #   unit_of_measurement: '°C'
   #   icon: 'mdi:thermometer'
 
   # Break into 96 individual sensors?
-  # - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/b/c/voltage' #   4.025,4.021,4.02,4.022,4.021,4.02,4.02,4.022,4.021,4.025,4.02,4.022,4.022,4.022,4.021,4.027,4.022,4.022,4.021,4.027,4.021,4.021,4.024,4.022,4.025,4.021,4.021,4.027,4.021,4.021,4.02,4.027,4.022,4.018,4.021,4.027,4.021,4.021,4.02,4.025,4.022,4.021,4.025,4.027,4.021,4.021,4.02,4.025,4.021,4.025,4.021,4.027,4.022,4.022,4.021,4.027,4.021,4.025,4.02,4.022,4.022,4.022,4.021,4.027,4.022,4.025,4.021,4.027,4.021,4.021,4.02,4.022,4.025,4.021,4.021,4.027,4.022,4.021,4.025,4.027,4.021,4.025,4.02,4.027,4.022,4.022,4.021,4.031,4.022,4.022,4.022,4.027,4.022,4.022,4.021,4.023V
+  # - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/b/c/voltage' #   4.025,4.021,4.02,4.022,4.021,4.02,4.02,4.022,4.021,4.025,4.02,4.022,4.022,4.022,4.021,4.027,4.022,4.022,4.021,4.027,4.021,4.021,4.024,4.022,4.025,4.021,4.021,4.027,4.021,4.021,4.02,4.027,4.022,4.018,4.021,4.027,4.021,4.021,4.02,4.025,4.022,4.021,4.025,4.027,4.021,4.021,4.02,4.025,4.021,4.025,4.021,4.027,4.022,4.022,4.021,4.027,4.021,4.025,4.02,4.022,4.022,4.022,4.021,4.027,4.022,4.025,4.021,4.027,4.021,4.021,4.02,4.022,4.025,4.021,4.021,4.027,4.022,4.021,4.025,4.027,4.021,4.025,4.02,4.027,4.022,4.022,4.021,4.031,4.022,4.022,4.022,4.027,4.022,4.022,4.021,4.023V
   #   name: 'Leaf v/b/c/voltage'
   #   value_template: '{{ value|round(2) }}'
   #   icon: 'mdi:flash-triangle'
   #
-  # - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/b/c/voltage/alert' #
+  # - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/b/c/voltage/alert' #
   #   name: 'Leaf v/b/c/voltage/alert'
+  #   state_class: 'measurement'
   #   value_template: '{{ value|round(2) }}'
   #   icon: 'mdi:alert'
 
-  # - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/b/c/voltage/dev/max' #
+  # - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/b/c/voltage/dev/max' #
   #   name: 'Leaf v/b/c/voltage/dev/max'
+  #   state_class: 'measurement'
   #   value_template: '{{ value|round(2) }}'
   #   unit_of_measurement: 'V'
   #   icon: 'mdi:flash-triangle'
   #
-  # - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/b/c/voltage/max' #   4.025,4.021,4.02,4.022,4.021,4.02,4.02,4.022,4.021,4.025,4.02,4.022,4.022,4.022,4.021,4.027,4.022,4.022,4.021,4.027,4.021,4.021,4.024,4.022,4.025,4.021,4.021,4.027,4.021,4.021,4.02,4.027,4.022,4.018,4.021,4.027,4.021,4.021,4.02,4.025,4.022,4.021,4.025,4.027,4.021,4.021,4.02,4.025,4.021,4.025,4.021,4.027,4.022,4.022,4.021,4.027,4.021,4.025,4.02,4.022,4.022,4.022,4.021,4.027,4.022,4.025,4.021,4.027,4.021,4.021,4.02,4.022,4.025,4.021,4.021,4.027,4.022,4.021,4.025,4.027,4.021,4.025,4.02,4.027,4.022,4.022,4.021,4.031,4.022,4.022,4.022,4.027,4.022,4.022,4.021,4.023V
+  # - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/b/c/voltage/max' #   4.025,4.021,4.02,4.022,4.021,4.02,4.02,4.022,4.021,4.025,4.02,4.022,4.022,4.022,4.021,4.027,4.022,4.022,4.021,4.027,4.021,4.021,4.024,4.022,4.025,4.021,4.021,4.027,4.021,4.021,4.02,4.027,4.022,4.018,4.021,4.027,4.021,4.021,4.02,4.025,4.022,4.021,4.025,4.027,4.021,4.021,4.02,4.025,4.021,4.025,4.021,4.027,4.022,4.022,4.021,4.027,4.021,4.025,4.02,4.022,4.022,4.022,4.021,4.027,4.022,4.025,4.021,4.027,4.021,4.021,4.02,4.022,4.025,4.021,4.021,4.027,4.022,4.021,4.025,4.027,4.021,4.025,4.02,4.027,4.022,4.022,4.021,4.031,4.022,4.022,4.022,4.027,4.022,4.022,4.021,4.023V
   #   name: 'Leaf v/b/c/voltage/max'
+  #   state_class: 'measurement'
   #   value_template: '{{ value|round(2) }}'
   #   unit_of_measurement: 'V'
   #   icon: 'mdi:flash-triangle'
   #
-  # - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/b/c/voltage/min' #   4.025,4.021,4.02,4.022,4.021,4.02,4.02,4.022,4.021,4.025,4.02,4.022,4.022,4.022,4.021,4.027,4.022,4.022,4.021,4.027,4.021,4.021,4.024,4.022,4.025,4.021,4.021,4.027,4.021,4.021,4.02,4.027,4.022,4.018,4.021,4.027,4.021,4.021,4.02,4.025,4.022,4.021,4.025,4.027,4.021,4.021,4.02,4.025,4.021,4.025,4.021,4.027,4.022,4.022,4.021,4.027,4.021,4.025,4.02,4.022,4.022,4.022,4.021,4.027,4.022,4.025,4.021,4.027,4.021,4.021,4.02,4.022,4.025,4.021,4.021,4.027,4.022,4.021,4.025,4.027,4.021,4.025,4.02,4.027,4.022,4.022,4.021,4.031,4.022,4.022,4.022,4.027,4.022,4.022,4.021,4.023V
+  # - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/b/c/voltage/min' #   4.025,4.021,4.02,4.022,4.021,4.02,4.02,4.022,4.021,4.025,4.02,4.022,4.022,4.022,4.021,4.027,4.022,4.022,4.021,4.027,4.021,4.021,4.024,4.022,4.025,4.021,4.021,4.027,4.021,4.021,4.02,4.027,4.022,4.018,4.021,4.027,4.021,4.021,4.02,4.025,4.022,4.021,4.025,4.027,4.021,4.021,4.02,4.025,4.021,4.025,4.021,4.027,4.022,4.022,4.021,4.027,4.021,4.025,4.02,4.022,4.022,4.022,4.021,4.027,4.022,4.025,4.021,4.027,4.021,4.021,4.02,4.022,4.025,4.021,4.021,4.027,4.022,4.021,4.025,4.027,4.021,4.025,4.02,4.027,4.022,4.022,4.021,4.031,4.022,4.022,4.022,4.027,4.022,4.022,4.021,4.023V
   #   name: 'Leaf v/b/c/voltage/min'
+  #   state_class: 'measurement'
   #   value_template: '{{ value|round(2) }}'
   #   unit_of_measurement: 'V'
   #   icon: 'mdi:flash-triangle'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/b/cac' #   39.1549Ah
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/b/cac' #   39.1549Ah
     name: 'Leaf Calculated Battery Capacity'
+    state_class: 'measurement'
     value_template: '{{ value|round(2) }}'
     unit_of_measurement: 'Ah'
     icon: 'mdi:battery-outline'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/b/consumption' #   0Wh/km
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/b/consumption' #   0Wh/km
     name: 'Leaf Battery Consumption Rate'
+    state_class: 'measurement'
     value_template: '{{ (value|float/0.621371)|round(2) }}'
     unit_of_measurement: 'Wh/km'
 
-  # NO LEAF #- state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/b/coulomb/recd' #
+  # NO LEAF #- state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/b/coulomb/recd' #
   # NO LEAF #  name: 'Leaf Coulomb Recovered On Trip'
+  # NO LEAF #  state_class: 'measurement'
   # NO LEAF #  value_template: '{{ value|round(2) }}'
   # NO LEAF #  unit_of_measurement: 'Ah'
   # NO LEAF #
-  # NO LEAF #- state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/b/coulomb/recd/total' #
+  # NO LEAF #- state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/b/coulomb/recd/total' #
   # NO LEAF #  name: 'Leaf Coulomb Recovered Total'
+  # NO LEAF #  state_class: 'measurement'
   # NO LEAF #  value_template: '{{ value|round(2) }}'
   # NO LEAF #  unit_of_measurement: 'Ah'
   # NO LEAF #
-  # NO LEAF #- state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/b/coulomb/used' #
+  # NO LEAF #- state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/b/coulomb/used' #
   # NO LEAF #  name: 'Leaf Coulomb Used On Trip'
+  # NO LEAF #  state_class: 'measurement'
   # NO LEAF #  value_template: '{{ value|round(2) }}'
   # NO LEAF #  unit_of_measurement: 'Ah'
   # NO LEAF #
-  # NO LEAF #- state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/b/coulomb/used/total' #
+  # NO LEAF #- state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/b/coulomb/used/total' #
   # NO LEAF #  name: 'Leaf Coulomb Used Total'
+  # NO LEAF #  state_class: 'measurement'
   # NO LEAF #  value_template: '{{ value|round(2) }}'
   # NO LEAF #  unit_of_measurement: 'Ah'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/b/current' #   -0.5A
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/b/current' #   -0.5A
     name: 'Leaf Battery Current Output'
+    state_class: 'measurement'
     value_template: '{{ value|round(2) }}'
     unit_of_measurement: 'A'
     icon: 'mdi:current-dc'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/b/energy/recd' #
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/b/energy/recd' #
     name: 'Leaf Energy Recovered On Trip'
+    state_class: 'measurement'
     value_template: '{{ value|round(2) }}'
     unit_of_measurement: 'kWh'
     icon: 'mdi:meter-electric-outline'
 
-  # NO LEAF #- state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/b/energy/recd/total' #
+  # NO LEAF #- state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/b/energy/recd/total' #
   # NO LEAF #  name: 'Leaf Energy Recovered Total'
+  # NO LEAF #  state_class: 'measurement'
   # NO LEAF #  value_template: '{{ value|round(2) }}'
   # NO LEAF #  unit_of_measurement: 'kWh'
   # NO LEAF #  icon: 'mdi:meter-electric-outline'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/b/energy/used' #
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/b/energy/used' #
     name: 'Leaf Energy Used On Trip'
+    state_class: 'measurement'
     value_template: '{{ value|round(2) }}'
     unit_of_measurement: 'kWh'
     icon: 'mdi:meter-electric-outline'
 
-  # NO LEAF #- state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/b/energy/used/total' #
+  # NO LEAF #- state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/b/energy/used/total' #
   # NO LEAF #  name: 'Leaf Energy Used Total'
+  # NO LEAF #  state_class: 'measurement'
   # NO LEAF #  value_template: '{{ value|round(2) }}'
   # NO LEAF #  unit_of_measurement: 'kWh'
   # NO LEAF #  icon: 'mdi:meter-electric-outline'
 
-  # NO LEAF #- state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/b/health' #
+  # NO LEAF #- state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/b/health' #
   # NO LEAF #  name: 'Leaf Battery Health'
+  # NO LEAF #  state_class: 'measurement'
   # NO LEAF #  value_template: '{{ value|round(2) }}'
   # NO LEAF #  icon: 'mdi:battery-heart'
 
-  # NO LEAF #- state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/b/p/level/avg' #
+  # NO LEAF #- state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/b/p/level/avg' #
   # NO LEAF #  name: 'Leaf Battery Pack Average Level'
+  # NO LEAF #  state_class: 'measurement'
   # NO LEAF #  value_template: '{{ value|round(2) }}'
   # NO LEAF #  unit_of_measurement: '%'
   # NO LEAF #  icon: 'mdi:battery-60'
 
-  # NO LEAF #- state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/b/p/level/max' #
+  # NO LEAF #- state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/b/p/level/max' #
   # NO LEAF #  name: 'Leaf Battery Pack Max Level'
+  # NO LEAF #  state_class: 'measurement'
   # NO LEAF #  value_template: '{{ value|round(2) }}'
   # NO LEAF #  unit_of_measurement: '%'
   # NO LEAF #  icon: 'mdi:battery-90'
 
-  # NO LEAF #- state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/b/p/level/min' #
+  # NO LEAF #- state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/b/p/level/min' #
   # NO LEAF #  name: 'Leaf Battery Pack Min Level'
+  # NO LEAF #  state_class: 'measurement'
   # NO LEAF #  value_template: '{{ value|round(2) }}'
   # NO LEAF #  unit_of_measurement: '%'
   # NO LEAF #  icon: 'mdi:battery-10'
 
-  # NO LEAF #- state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/b/p/level/stddev' #
+  # NO LEAF #- state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/b/p/level/stddev' #
   # NO LEAF #  name: 'Leaf Battery Pack Level Standard Deviation'
+  # NO LEAF #  state_class: 'measurement'
   # NO LEAF #  value_template: '{{ value|round(2) }}'
   # NO LEAF #  unit_of_measurement: '%'
   # NO LEAF #  icon: 'mdi:battery-60'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/b/temp' #   21.32°C
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/b/temp' #   21.32°C
     name: 'Leaf Battery Pack Temp'
+    state_class: 'measurement'
     value_template: '{{ (value|float*9/5+32)|round(2) }}'
     unit_of_measurement: '°F'
     icon: 'mdi:thermometer'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/b/p/temp/avg' #   21.32°C
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/b/p/temp/avg' #   21.32°C
     name: 'Leaf Battery Pack Average Temp'
+    state_class: 'measurement'
     value_template: '{{ (value|float*9/5+32)|round(2) }}'
     unit_of_measurement: '°F'
     icon: 'mdi:thermometer'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/b/p/temp/max' #   21.624°C
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/b/p/temp/max' #   21.624°C
     name: 'Leaf Battery Pack Max Temp'
+    state_class: 'measurement'
     value_template: '{{ (value|float*9/5+32)|round(2) }}'
     unit_of_measurement: '°F'
     icon: 'mdi:thermometer-high'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/b/p/temp/min' #   21.114°C
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/b/p/temp/min' #   21.114°C
     name: 'Leaf Battery Pack Min Temp'
+    state_class: 'measurement'
     value_template: '{{ (value|float*9/5+32)|round(2) }}'
     unit_of_measurement: '°F'
     icon: 'mdi:thermometer-low'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/b/p/temp/stddev' #   0.22°C
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/b/p/temp/stddev' #   0.22°C
     name: 'Leaf Battery Pack Temp Standard Deviation'
+    state_class: 'measurement'
     value_template: '{{ (value|float*9/5)|round(2) }}' # no +32 to keep it around 0
     unit_of_measurement: '°F'
     icon: 'mdi:thermometer'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/b/p/temp/stddev/max' #   0.22°C
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/b/p/temp/stddev/max' #   0.22°C
     name: 'Leaf Battery Pack Max Temp Standard Deviation'
+    state_class: 'measurement'
     value_template: '{{ (value|float*9/5)|round(2) }}' # no +32 to keep it around 0
     unit_of_measurement: '°F'
     icon: 'mdi:thermometer'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/b/p/voltage/avg' #   4.02266V
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/b/p/voltage/avg' #   4.02266V
     name: 'Leaf Battery Pack Average Voltage'
+    state_class: 'measurement'
     value_template: '{{ value|round(2) }}'
     unit_of_measurement: 'V'
     icon: 'mdi:flash-triangle'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/b/p/voltage/grad' #   0.0014V
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/b/p/voltage/grad' #   0.0014V
     name: 'Leaf Battery Pack Voltage Gradient'
+    state_class: 'measurement'
     value_template: '{{ value|round(2) }}'
     unit_of_measurement: 'V'
     icon: 'mdi:flash-triangle'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/b/p/voltage/max' #   4.031V
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/b/p/voltage/max' #   4.031V
     name: 'Leaf Battery Pack Max Voltage'
+    state_class: 'measurement'
     value_template: '{{ value|round(2) }}'
     unit_of_measurement: 'V'
     icon: 'mdi:flash-triangle'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/b/p/voltage/min' #   4.018V
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/b/p/voltage/min' #   4.018V
     name: 'Leaf Battery Pack Min Voltage'
+    state_class: 'measurement'
     value_template: '{{ value|round(2) }}'
     unit_of_measurement: 'V'
     icon: 'mdi:flash-triangle'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/b/p/voltage/stddev' #   0.00249V
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/b/p/voltage/stddev' #   0.00249V
     name: 'Leaf Battery Pack Voltage Standard Deviation'
+    state_class: 'measurement'
     value_template: '{{ value|round(2) }}'
     unit_of_measurement: 'V'
     icon: 'mdi:flash-triangle'
 
-  # - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/b/p/voltage/stddev/max' #   0V
+  # - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/b/p/voltage/stddev/max' #   0V
   #   name: 'Leaf Battery Pack Max Voltage Standard Deviation'
+  #   state_class: 'measurement'
   #   value_template: '{{ value|round(2) }}'
   #   unit_of_measurement: 'V'
   #   #icon: 'mdi:'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/b/power' #   -0.193kW
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/b/power' #   -0.193kW
     name: 'Leaf Battery Power Output'
+    state_class: 'measurement'
     value_template: '{{ value|round(2) }}'
     unit_of_measurement: 'kW'
     #icon: 'mdi:'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/b/range/est' #   35.3865km
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/b/range/est' #   35.3865km
     name: 'Leaf Battery Estimated Range'
+    state_class: 'measurement'
     value_template: '{{ (value|float*0.621371)|round(1) }}'
     unit_of_measurement: 'mi'
     #icon: 'mdi:'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/b/range/full' #   44.793km
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/b/range/full' #   44.793km
     name: 'Leaf Battery Ideal Max Range'
+    state_class: 'measurement'
     value_template: '{{ (value|float*0.621371)|round(1) }}'
     unit_of_measurement: 'mi'
     #icon: 'mdi:'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/b/range/ideal' #   61.0259km
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/b/range/ideal' #   61.0259km
     name: 'Leaf Battery Ideal Range'
+    state_class: 'measurement'
     value_template: '{{ (value|float*0.621371)|round(1) }}'
     unit_of_measurement: 'mi'
     #icon: 'mdi:'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/b/range/speed' #   0.5km/h
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/b/range/speed' #   0.5km/h
     name: 'Leaf Battery Ideal Range Speed'
+    state_class: 'measurement'
     value_template: '{{ (value|float*0.621371)|round(1) }}'
     unit_of_measurement: 'mph'
     #icon: 'mdi:'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/b/soc' #   79%
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/b/soc' #   79%
     name: 'Leaf Battery State of Charge'
+    state_class: 'measurement'
     value_template: '{{ value|round(2) }}'
     unit_of_measurement: '%'
     #icon: 'mdi:'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/b/voltage' #   386V
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/b/voltage' #   386V
     name: 'Leaf Battery Voltage'
+    state_class: 'measurement'
     value_template: '{{ value|round(2) }}'
     unit_of_measurement: 'V'
     icon: 'mdi:flash-triangle'
 
-  # NO LEAF #- state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/c/12v/current' #
+  # NO LEAF #- state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/c/12v/current' #
   # NO LEAF #  name: 'Leaf 12V Charge Current'
+  # NO LEAF #  state_class: 'measurement'
   # NO LEAF #  value_template: '{{ value|round(2) }}'
   # NO LEAF #  unit_of_measurement: 'A'
   # NO LEAF #  icon: 'mdi:current-dc'
   # NO LEAF #
-  # NO LEAF #- state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/c/12v/power' #
+  # NO LEAF #- state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/c/12v/power' #
   # NO LEAF #  name: 'Leaf 12V Charge Power'
+  # NO LEAF #  state_class: 'measurement'
   # NO LEAF #  value_template: '{{ value|round(2) }}'
   # NO LEAF #  unit_of_measurement: 'W'
   # NO LEAF #  icon: 'mdi:power-plug-battery'
   # NO LEAF #
-  # NO LEAF #- state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/c/12v/temp' #
+  # NO LEAF #- state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/c/12v/temp' #
   # NO LEAF #  name: 'Leaf 12V Charge Temp'
+  # NO LEAF #  state_class: 'measurement'
   # NO LEAF #  value_template: '{{ value|round(2) }}'
   # NO LEAF #  unit_of_measurement: '°C'
   # NO LEAF #  icon: 'mdi:thermometer'
   # NO LEAF #
-  # NO LEAF #- state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/c/12v/voltage' #
+  # NO LEAF #- state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/c/12v/voltage' #
   # NO LEAF #  name: 'Leaf 12V Charge Voltage'
+  # NO LEAF #  state_class: 'measurement'
   # NO LEAF #  value_template: '{{ value|round(2) }}'
   # NO LEAF #  unit_of_measurement: 'V'
   # NO LEAF #  icon: 'mdi:flash-triangle'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/c/climit' #   0A
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/c/climit' #   0A
     name: 'Leaf Charger Max Current Output'
+    state_class: 'measurement'
     value_template: '{{ value|round(2) }}'
     unit_of_measurement: 'A'
     icon: 'mdi:current-dc'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/c/current' #   0A
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/c/current' #   0A
     name: 'Leaf Charger Current Output'
+    state_class: 'measurement'
     value_template: '{{ value|round(2) }}'
     unit_of_measurement: 'A'
     icon: 'mdi:current-dc'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/c/duration/full' #
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/c/duration/full' #
     name: 'Leaf Charger Time To Full'
+    state_class: 'measurement'
     value_template: '{{ (value|float/60)|round(2) }}'
     unit_of_measurement: 'hr'
     icon: 'mdi:ev-station'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/c/duration/range' #
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/c/duration/range' #
     name: 'Leaf Charger Time To Desired Range'
+    state_class: 'measurement'
     value_template: '{{ (value|float/60)|round(2) }}'
     unit_of_measurement: 'hr'
     icon: 'mdi:ev-station'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/c/duration/soc' #
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/c/duration/soc' #
     name: 'Leaf Charger Time To Desired State Of Charge'
+    state_class: 'measurement'
     value_template: '{{ (value|float/60)|round(2) }}'
     unit_of_measurement: 'hr'
     icon: 'mdi:ev-station'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/c/efficiency' #   100%
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/c/efficiency' #   100%
     name: 'Leaf Charger Efficiency'
+    state_class: 'measurement'
     value_template: '{{ value|round(2) }}'
     unit_of_measurement: '%'
     icon: 'mdi:ev-station'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/c/kwh' #   0kWh
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/c/kwh' #   0kWh
     name: 'Leaf Charger Energy Charged'
+    state_class: 'measurement'
     value_template: '{{ value|round(2) }}'
     unit_of_measurement: 'kWh'
     icon: 'mdi:meter-electric-outline'
 
-  # NO LEAF #- state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/c/kwh/grid' #
+  # NO LEAF #- state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/c/kwh/grid' #
   # NO LEAF #  name: 'Leaf Charger Energy From Grid'
+  # NO LEAF #  state_class: 'measurement'
   # NO LEAF #  value_template: '{{ value|round(2) }}'
   # NO LEAF #  unit_of_measurement: 'kWh'
   # NO LEAF #  icon: 'mdi:meter-electric-outline'
 
-  # NO LEAF #- state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/c/kwh/grid/total' #
+  # NO LEAF #- state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/c/kwh/grid/total' #
   # NO LEAF #  name: 'Leaf Charger Lifetime Energy From Grid'
+  # NO LEAF #  state_class: 'measurement'
   # NO LEAF #  value_template: '{{ value|round(2) }}'
   # NO LEAF #  unit_of_measurement: 'kWh'
   # NO LEAF #  icon: 'mdi:meter-electric-outline'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/c/limit/range' #   0km
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/c/limit/range' #   0km
     name: 'Leaf Charger Desired Range'
+    state_class: 'measurement'
     value_template: '{{ (value|float*0.621371)|round(1) }}'
     unit_of_measurement: 'mi'
     icon: 'mdi:ev-station'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/c/limit/soc' #   0%
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/c/limit/soc' #   0%
     name: 'Leaf Charger Desired State Of Charge'
+    state_class: 'measurement'
     value_template: '{{ value|round(2) }}'
     unit_of_measurement: '%'
     icon: 'mdi:ev-station'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/c/mode' #
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/c/mode' #
     name: 'Leaf Charger Mode'
     icon: 'mdi:ev-station'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/c/power' #   0kW
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/c/power' #   0kW
     name: 'Leaf Charger Power'
+    state_class: 'measurement'
     value_template: '{{ value|round(2) }}'
     unit_of_measurement: 'kW'
     icon: 'mdi:flash'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/c/state' #   timerwait
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/c/state' #   timerwait
     name: 'Leaf Charger State'
     icon: 'mdi:ev-station'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/c/substate' #   timerwait
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/c/substate' #   timerwait
     name: 'Leaf Charger Sub-State'
     icon: 'mdi:ev-station'
 
-  # NO LEAF #- state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/c/temp' #
+  # NO LEAF #- state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/c/temp' #
   # NO LEAF #  name: 'Leaf Charger Temp'
+  # NO LEAF #  state_class: 'measurement'
   # NO LEAF #  value_template: '{{ (value|float*9/5+32)|round(2) }}'
   # NO LEAF #  unit_of_measurement: '°F'
   # NO LEAF #  icon: 'mdi:thermometer'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/c/time' #   0Sec
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/c/time' #   0Sec
     name: 'Leaf Charging Time'
+    state_class: 'measurement'
     value_template: '{{ (value|float/3600)|round(2) }}'
     unit_of_measurement: 'hr'
     icon: 'mdi:ev-station'
 
-  # NO LEAF #- state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/c/timerstart' #
+  # NO LEAF #- state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/c/timerstart' #
   # NO LEAF #  name: 'Leaf Charger Timer Start Time'
+  # NO LEAF #  state_class: 'measurement'
   # NO LEAF #  value_template: '{{ value|round(2) }}'
   # NO LEAF #  unit_of_measurement: 's'
   # NO LEAF #  icon: 'mdi:ev-station'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/c/type' #   type1
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/c/type' #   type1
     name: 'Leaf Charger Type'
     icon: 'mdi:ev-station'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/c/voltage' #   0V
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/c/voltage' #   0V
     name: 'Leaf Charger Voltage'
+    state_class: 'measurement'
     value_template: '{{ value|round(2) }}'
     unit_of_measurement: 'V'
     icon: 'mdi:flash-triangle'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/e/cabinfan' #   0%
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/e/cabinfan' #   0%
     name: 'Leaf Cabin Fan Level'
+    state_class: 'measurement'
     value_template: '{{ value|round(2) }}'
     unit_of_measurement: '%'
     #icon: 'mdi:'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/e/cabinfanlimit' #   7
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/e/cabinfanlimit' #   7
     name: 'Leaf Cabin Fan Limit'
+    state_class: 'measurement'
     value_template: '{{ value|round(2) }}'
     unit_of_measurement: ''
     #icon: 'mdi:'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/e/cabinintake' #
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/e/cabinintake' #
     name: 'Leaf Cabin Intake Type'
     #icon: 'mdi:'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/e/cabinsetpoint' #   0°C
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/e/cabinsetpoint' #   0°C
     name: 'Leaf Cabin Desired Temp'
+    state_class: 'measurement'
     value_template: '{{ (value|float*9/5+32)|round(2) }}'
     unit_of_measurement: '°F'
     icon: 'mdi:thermometer'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/e/cabintemp' #   18.8889°C
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/e/cabintemp' #   18.8889°C
     name: 'Leaf Cabin Temp'
+    state_class: 'measurement'
     value_template: '{{ (value|float*9/5+32)|round(2) }}'
     unit_of_measurement: '°F'
     icon: 'mdi:thermometer'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/e/cabinvent' #   off
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/e/cabinvent' #   off
     name: 'Leaf Cabin Vent Position'
 
-  # NO LEAF #- state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/e/drivemode' #
+  # NO LEAF #- state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/e/drivemode' #
   # NO LEAF #  name: 'Leaf Drive Mode'
+  # NO LEAF #  state_class: 'measurement'
   # NO LEAF #  value_template: '{{ value|round(2) }}'
   # NO LEAF #  #icon: 'mdi:'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/e/drivetime' #   0Sec
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/e/drivetime' #   0Sec
     name: 'Leaf Drive Time'
+    state_class: 'measurement'
     value_template: '{{ (value|float/60)|round(2) }}'
     unit_of_measurement: 'min'
     #icon: 'mdi:'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/e/footbrake' #
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/e/footbrake' #
     name: 'Leaf Foot Brake Level'
+    state_class: 'measurement'
     value_template: '{{ value|round(2) }}'
     unit_of_measurement: '%'
     #icon: 'mdi:'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/e/gear' #   0
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/e/gear' #   0
     name: 'Leaf Gear Direction'
+    state_class: 'measurement'
     value_template: '{{ value|int }}'
     unit_of_measurement: ''
     #icon: 'mdi:'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/e/parktime' #   63885Sec
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/e/parktime' #   63885Sec
     name: 'Leaf Time Parked'
+    state_class: 'measurement'
     value_template: '{{ (value|float/3600)|round(2) }}'
     unit_of_measurement: 'hr'
     #icon: 'mdi:'
 
-  # NO LEAF #- state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/e/serv/range' #
+  # NO LEAF #- state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/e/serv/range' #
   # NO LEAF #  name: 'Leaf Distance Until Next Maintenance'
+  # NO LEAF #  state_class: 'measurement'
   # NO LEAF #  value_template: '{{ (value|float*0.621371)|round(1) }}'
   # NO LEAF #  unit_of_measurement: 'mi'
   # NO LEAF #  #icon: 'mdi:'
 
-  # NO LEAF #- state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/e/serv/time' #
+  # NO LEAF #- state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/e/serv/time' #
   # NO LEAF #  name: 'Leaf Time On Next Maintenance'
+  # NO LEAF #  state_class: 'measurement'
   # NO LEAF #  value_template: '{{ value|round(2) }}'
   # NO LEAF #  unit_of_measurement: 's'
   # NO LEAF #  #icon: 'mdi:'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/e/temp' #   22.5°C
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/e/temp' #   22.5°C
     name: 'Leaf Ambient Temperature'
+    state_class: 'measurement'
     value_template: '{{ (value|float*9/5+32)|round(2) }}'
     unit_of_measurement: '°F'
     icon: 'mdi:thermometer'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/e/throttle' #   0%
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/e/throttle' #   0%
     name: 'Leaf Throttle Level'
+    state_class: 'measurement'
     value_template: '{{ value|round(2) }}'
     unit_of_measurement: '%'
     #icon: 'mdi:'
 
-  # - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/e/valet' #
+  # - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/e/valet' #
   #   name: 'Leaf Valet Mode'
+  #   state_class: 'measurement'
   #   value_template: '{{ value|round(2) }}'
   #   #icon: 'mdi:'
 
-  # - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/g/climit' #   0A
+  # - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/g/climit' #   0A
   #   name: 'Leaf Generator Max Current Input'
+  #   state_class: 'measurement'
   #   value_template: '{{ value|round(2) }}'
   #   unit_of_measurement: 'A'
   #   #icon: 'mdi:'
 
-  # - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/g/current' #   0A
+  # - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/g/current' #   0A
   #   name: 'Leaf Generator Current Input'
+  #   state_class: 'measurement'
   #   value_template: '{{ value|round(2) }}'
   #   unit_of_measurement: 'A'
   #   #icon: 'mdi:'
 
-  # - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/g/duration/empty' #
+  # - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/g/duration/empty' #
   #   name: 'Leaf Generator Time To Empty'
+  #   state_class: 'measurement'
   #   value_template: '{{ value|round(2) }}'
   #   unit_of_measurement: 'min'
   #   #icon: 'mdi:'
 
-  # - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/g/duration/range' #
+  # - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/g/duration/range' #
   #   name: 'Leaf Generator Time To Desired Range'
+  #   state_class: 'measurement'
   #   value_template: '{{ value|round(2) }}'
   #   unit_of_measurement: 'min'
   #   #icon: 'mdi:'
 
-  # - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/g/duration/soc' #
+  # - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/g/duration/soc' #
   #   name: 'Leaf Generator Time To Desired State Of Charge'
+  #   state_class: 'measurement'
   #   value_template: '{{ value|round(2) }}'
   #   unit_of_measurement: 'min'
   #   #icon: 'mdi:'
 
-  # - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/g/efficiency' #
+  # - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/g/efficiency' #
   #   name: 'Leaf Generator Efficiency'
+  #   state_class: 'measurement'
   #   value_template: '{{ value|round(2) }}'
   #   unit_of_measurement: '%'
   #   #icon: 'mdi:'
 
-  # - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/g/kwh' #
+  # - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/g/kwh' #
   #   name: 'Leaf Generator Energy'
+  #   state_class: 'measurement'
   #   value_template: '{{ value|round(2) }}'
   #   unit_of_measurement: 'kWh'
   #   icon: 'mdi:meter-electric-outline'
 
-  # - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/g/kwh/grid' #
+  # - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/g/kwh/grid' #
   #   name: 'Leaf Generator Energy To Grid'
+  #   state_class: 'measurement'
   #   value_template: '{{ value|round(2) }}'
   #   unit_of_measurement: 'kWh'
   #   icon: 'mdi:meter-electric-outline'
 
-  # - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/g/kwh/grid/total' #
+  # - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/g/kwh/grid/total' #
   #   name: 'Leaf Generator Lifetime Energy To Grid'
+  #   state_class: 'measurement'
   #   value_template: '{{ value|round(2) }}'
   #   unit_of_measurement: 'kWh'
   #   icon: 'mdi:meter-electric-outline'
 
-  # - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/g/limit/range' #
+  # - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/g/limit/range' #
   #   name: 'Leaf Generator Desired Range'
+  #   state_class: 'measurement'
   #   value_template: '{{ (value|float*0.621371)|round(1) }}'
   #   unit_of_measurement: 'mi'
   #   #icon: 'mdi:'
 
-  # - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/g/limit/soc' #
+  # - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/g/limit/soc' #
   #   name: 'Leaf Generator Desired State Of Charge'
+  #   state_class: 'measurement'
   #   value_template: '{{ value|round(2) }}'
   #   unit_of_measurement: '%'
   #   #icon: 'mdi:'
 
-  # - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/g/mode' #
+  # - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/g/mode' #
   #   name: 'Leaf Generator Mode'
+  #   state_class: 'measurement'
   #   value_template: '{{ value|round(2) }}'
   #   #icon: 'mdi:'
 
-  # - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/g/power' #   0kW
+  # - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/g/power' #   0kW
   #   name: 'Leaf Generator Power'
+  #   state_class: 'measurement'
   #   value_template: '{{ value|round(2) }}'
   #   unit_of_measurement: 'kW'
   #   icon: 'mdi:flash'
 
-  # - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/g/state' #
+  # - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/g/state' #
   #   name: 'Leaf Generator State'
+  #   state_class: 'measurement'
   #   value_template: '{{ value|round(2) }}'
   #   #icon: 'mdi:'
   #
-  # - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/g/substate' #
+  # - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/g/substate' #
   #   name: 'Leaf Generator Sub-State'
+  #   state_class: 'measurement'
   #   value_template: '{{ value|round(2) }}'
   #   #icon: 'mdi:'
 
-  # - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/g/temp' #
+  # - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/g/temp' #
   #   name: 'Leaf Generator Temp'
+  #   state_class: 'measurement'
   #   value_template: '{{ (value|float*9/5+32)|round(2) }}'
   #   unit_of_measurement: '°F'
   #   #icon: 'mdi:'
 
-  # - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/g/time' #   0Sec
+  # - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/g/time' #   0Sec
   #   name: 'Leaf Generator Time'
+  #   state_class: 'measurement'
   #   value_template: '{{ (value|float/60)|round(2) }}'
   #   unit_of_measurement: 'min'
   #   #icon: 'mdi:'
 
-  # - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/g/timerstart' #
+  # - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/g/timerstart' #
   #   name: 'Leaf Generator Timer Start Time'
+  #   state_class: 'measurement'
   #   value_template: '{{ value|round(2) }}'
   #   unit_of_measurement: 's'
   #   #icon: 'mdi:'
 
-  # - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/g/type' #
+  # - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/g/type' #
   #   name: 'Leaf Generator Type'
+  #   state_class: 'measurement'
   #   value_template: '{{ value|round(2) }}'
   #   #icon: 'mdi:'
 
-  # - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/g/voltage' #   0V
+  # - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/g/voltage' #   0V
   #   name: 'Leaf Generator Voltage'
+  #   state_class: 'measurement'
   #   value_template: '{{ value|round(2) }}'
   #   unit_of_measurement: 'V'
   #   icon: 'mdi:flash-triangle'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/i/efficiency' #   100%
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/i/efficiency' #   100%
     name: 'Leaf Inverter Efficiency'
+    state_class: 'measurement'
     value_template: '{{ value|round(2) }}'
     unit_of_measurement: '%'
     #icon: 'mdi:'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/i/power' #   0kW
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/i/power' #   0kW
     name: 'Leaf Inverter Power'
+    state_class: 'measurement'
     value_template: '{{ value|round(2) }}'
     unit_of_measurement: 'kW'
     icon: 'mdi:flash'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/i/temp' #   16.6667°C
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/i/temp' #   16.6667°C
     name: 'Leaf Inverter Temp'
+    state_class: 'measurement'
     value_template: '{{ (value|float*9/5+32)|round(2) }}'
     unit_of_measurement: '°F'
     icon: 'mdi:thermometer'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/m/rpm' #   0
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/m/rpm' #   0
     name: 'Leaf Motor RPM'
+    state_class: 'measurement'
     value_template: '{{ value|round(2) }}'
     unit_of_measurement: 'rpm'
     #icon: 'mdi:'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/m/temp' #   17.7778°C
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/m/temp' #   17.7778°C
     name: 'Leaf Motor Temp'
+    state_class: 'measurement'
     value_template: '{{ (value|float*9/5+32)|round(2) }}'
     unit_of_measurement: '°F'
     icon: 'mdi:thermometer'
 
-  # NO LEAF #- state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/p/acceleration' #
+  # NO LEAF #- state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/p/acceleration' #
   # NO LEAF #  name: 'Leaf Acceleration'
+  # NO LEAF #  state_class: 'measurement'
   # NO LEAF #  value_template: '{{ value|round(2) }}'
   # NO LEAF #  unit_of_measurement: 'm/s²'
   # NO LEAF #  #icon: 'mdi:'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/p/altitude' #   1290.4m
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/p/altitude' #   1290.4m
     name: 'Leaf Altitude'
+    state_class: 'measurement'
     value_template: '{{ (value|float*3.28084)|round(0) }}'
     unit_of_measurement: 'ft'
     #icon: 'mdi:'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/p/direction' #   0°
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/p/direction' #   0°
     name: 'Leaf Direction'
+    state_class: 'measurement'
     value_template: '{{ value|round(2) }}'
     unit_of_measurement: '°'
     #icon: 'mdi:'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/p/gpshdop' #   1.3
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/p/gpshdop' #   1.3
     name: 'Leaf GPS Horiz Dilution'
+    state_class: 'measurement'
     value_template: '{{ value|round(2) }}'
     unit_of_measurement: ''
     #icon: 'mdi:'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/p/gpsmode' #   AA
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/p/gpsmode' #   AA
     name: 'Leaf GPS Mode'
     #icon: 'mdi:'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/p/gpsspeed' #   0km/h
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/p/gpsspeed' #   0km/h
     name: 'Leaf GPS Speed'
+    state_class: 'measurement'
     value_template: '{{ (value|float*0.621371)|round(1) }}'
     unit_of_measurement: 'mph'
     #icon: 'mdi:'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/p/gpssq' #   53%
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/p/gpssq' #   53%
     name: 'Leaf GPS Signal Quality'
+    state_class: 'measurement'
     value_template: '{{ value|round(2) }}'
     unit_of_measurement: '%'
     #icon: 'mdi:'
 
-  # - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/p/gpstime' #   1687474862Sec
+  # - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/p/gpstime' #   1687474862Sec
   #   name: 'Leaf GPS Time'
+  #   state_class: 'measurement'
   #   value_template: '{{ value|round(0) }}'
   #   unit_of_measurement: 's'
   #   #icon: 'mdi:'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/p/latitude' #   49.9464
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/p/latitude' #   49.9464
     name: 'Leaf Latitude'
+    state_class: 'measurement'
     value_template: '{{ value|round(7) }}'
     unit_of_measurement: '°'
     #icon: 'mdi:'
 
-  # - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/p/location' #
+  # - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/p/location' #
   #   name: 'Leaf Location'
+  #   state_class: 'measurement'
   #   value_template: '{{ value|round(2) }}'
   #   #icon: 'mdi:'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/p/longitude' #   -113.886
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/p/longitude' #   -113.886
     name: 'Leaf Longitude'
+    state_class: 'measurement'
     value_template: '{{ value|round(7) }}'
     unit_of_measurement: '°'
     #icon: 'mdi:'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/p/odometer' #   176015km
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/p/odometer' #   176015km
     name: 'Leaf Odometer'
+    state_class: 'measurement'
     value_template: '{{ (value|float*0.621371)|round(0) }}'
     unit_of_measurement: 'mi'
     #icon: 'mdi:'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/p/satcount' #   8
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/p/satcount' #   8
     name: 'Leaf GPS Sat Count'
+    state_class: 'measurement'
     value_template: '{{ value|round(2) }}'
     unit_of_measurement: 'sat'
     #icon: 'mdi:'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/p/speed' #
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/p/speed' #
     name: 'Leaf Speed'
+    state_class: 'measurement'
     value_template: '{{ value|round(2) }}'
     unit_of_measurement: 'km/h'
     #icon: 'mdi:'
 
-  # NO LEAF #- state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/p/trip' #
+  # NO LEAF #- state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/p/trip' #
   # NO LEAF #  name: 'Leaf Trip Distance'
+  # NO LEAF #  state_class: 'measurement'
   # NO LEAF #  value_template: '{{ (value|float*0.621371)|round(1) }}'
   # NO LEAF #  unit_of_measurement: 'mi'
   # NO LEAF #  #icon: 'mdi:'
 
-  # NO LEAF #- state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/t/health' #
+  # NO LEAF #- state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/t/health' #
   # NO LEAF #  name: 'Leaf TPMS Health'
+  # NO LEAF #  state_class: 'measurement'
   # NO LEAF #  value_template: '{{ value|round(2) }}'
   # NO LEAF #  unit_of_measurement: '%'
   # NO LEAF #  #icon: 'mdi:'
 
-  #- state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/t/pressure' #
+  #- state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/t/pressure' #
   #  name: 'Leaf Tire Pressure All'
   #  unit_of_measurement: 'kPa'
   #  #icon: 'mdi:'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/t/pressure' #
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/t/pressure' #
     name: 'Leaf FL Tire Pressure'
+    state_class: 'measurement'
     value_template: '{{ ((value.split(",")[0])|float/6.895)|round(1) }}'
     unit_of_measurement: 'psi'
     icon: 'mdi:tire'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/t/pressure' #
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/t/pressure' #
     name: 'Leaf FR Tire Pressure'
+    state_class: 'measurement'
     value_template: '{{ ((value.split(",")[1])|float/6.895)|round(1) }}'
     unit_of_measurement: 'psi'
     icon: 'mdi:tire'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/t/pressure' #
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/t/pressure' #
     name: 'Leaf RL Tire Pressure'
+    state_class: 'measurement'
     value_template: '{{ ((value.split(",")[2])|float/6.895)|round(1) }}'
     unit_of_measurement: 'psi'
     icon: 'mdi:tire'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/t/pressure' #
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/t/pressure' #
     name: 'Leaf RR Tire Pressure'
+    state_class: 'measurement'
     value_template: '{{ ((value.split(",")[3])|float/6.895)|round(1) }}'
     unit_of_measurement: 'psi'
     icon: 'mdi:tire'
 
-  # NO LEAF #- state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/t/temp' #
+  # NO LEAF #- state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/t/temp' #
   # NO LEAF #  name: 'Leaf TPMS Temp'
+  # NO LEAF #  state_class: 'measurement'
   # NO LEAF #  value_template: '{{ (value|float*9/5+32)|round(2) }}'
   # NO LEAF #  unit_of_measurement: '°F'
   # NO LEAF #  #icon: 'mdi:'
 
-  # - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/type' #   NL
+  # - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/type' #   NL
   #   name: 'Leaf Vehicle Type'
+  #   state_class: 'measurement'
   #   value_template: '{{ value|round(2) }}'
   #   unit_of_measurement: 'V'
   #   #icon: 'mdi:'
 
-  # - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/v/vin' #
+  # - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/v/vin' #
   #   name: 'Leaf VIN'
+  #   state_class: 'measurement'
   #   value_template: '{{ value|round(2) }}'
   #   #icon: 'mdi:'
 
-  # - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/xnl/bms/balancing' #   1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96
+  # - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/xnl/bms/balancing' #   1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96
   #   name: 'Leaf Balancing'
+  #   state_class: 'measurement'
   #   value_template: '{{ value|round(2) }}'
   #   #icon: 'mdi:'
 
-  # - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/xnl/bms/temp/int' #   21,21,255,21,21,0°C (what do these values mean?)
+  # - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/xnl/bms/temp/int' #   21,21,255,21,21,0°C (what do these values mean?)
   #   name: 'Leaf BMS Temp'
+  #   state_class: 'measurement'
   #   value_template: '{{ value|round(2) }}'
   #   # unit_of_measurement: '°C'
   #   #icon: 'mdi:'
 
-  # - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/xnl/bms/thermistor' #   498,503,65535,502
+  # - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/xnl/bms/thermistor' #   498,503,65535,502
   #   name: 'Leaf Thermistor'
+  #   state_class: 'measurement'
   #   value_template: '{{ value|round(2) }}'
   #   #icon: 'mdi:'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/xnl/v/b/charge/limit' #   102.3kW
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/xnl/v/b/charge/limit' #   102.3kW
     name: 'Leaf Charge Limit'
+    state_class: 'measurement'
     value_template: '{{ value|round(2) }}'
     unit_of_measurement: 'kW'
     icon: 'mdi:flash'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/xnl/v/b/e/available' #   10.72kWh
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/xnl/v/b/e/available' #   10.72kWh
     name: 'Leaf Energy Available'
+    state_class: 'measurement'
     value_template: '{{ value|round(2) }}'
     unit_of_measurement: 'kWh'
     icon: 'mdi:battery-clock'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/xnl/v/b/e/capacity' #   10.88kWh
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/xnl/v/b/e/capacity' #   10.88kWh
     name: 'Leaf Energy Capacity'
+    state_class: 'measurement'
     value_template: '{{ value|round(2) }}'
     unit_of_measurement: 'kWh'
     icon: 'mdi:battery-outline'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/xnl/v/b/gids' #   134
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/xnl/v/b/gids' #   134
     name: 'Leaf GIDs'
+    state_class: 'measurement'
     value_template: '{{ value|round(2) }}'
     unit_of_measurement: 'gid'
     #icon: 'mdi:'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/xnl/v/b/gids' #   134
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/xnl/v/b/gids' #   134
     name: 'Leaf Capacity (GID)'
+    state_class: 'measurement'
     value_template: '{{ (value|float*0.08)|round(2) }}'
     unit_of_measurement: 'kWh'
     icon: 'mdi:battery-outline'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/xnl/v/b/hx' #   39.52
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/xnl/v/b/hx' #   39.52
     name: 'Leaf HX'
+    state_class: 'measurement'
     value_template: '{{ value|round(2) }}'
     unit_of_measurement: 'ohms'
     #icon: 'mdi:'
 
-  # - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/xnl/v/b/max/gids' #   0
+  # - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/xnl/v/b/max/gids' #   0
   #   name: 'Leaf Max GIDs'
+  #   state_class: 'measurement'
   #   value_template: '{{ value|round(2) }}'
   #   unit_of_measurement: 'gid'
   #   #icon: 'mdi:'
   #
-  # - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/xnl/v/b/max/gids' #   0
+  # - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/xnl/v/b/max/gids' #   0
   #   name: 'Leaf Max Capacity (GID)'
+  #   state_class: 'measurement'
   #   value_template: '{{ (value|float*0.08)|round(2) }}'
   #   unit_of_measurement: 'kWh'
   #   icon: 'mdi:battery-outline'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/xnl/v/b/output/limit' #   110kW
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/xnl/v/b/output/limit' #   110kW
     name: 'Leaf Output Limit'
+    state_class: 'measurement'
     value_template: '{{ value|round(2) }}'
     unit_of_measurement: 'kW'
     icon: 'mdi:flash'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/xnl/v/b/range/instrument' #   82km
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/xnl/v/b/range/instrument' #   82km
     name: 'Leaf Instrument Range'
+    state_class: 'measurement'
     value_template: '{{ (value|float*0.621371)|round(1) }}'
     unit_of_measurement: 'mi'
     #icon: 'mdi:'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/xnl/v/b/regen/limit' #   5kW
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/xnl/v/b/regen/limit' #   5kW
     name: 'Leaf Regen Limit'
+    state_class: 'measurement'
     value_template: '{{ value|round(2) }}'
     unit_of_measurement: 'kW'
     icon: 'mdi:flash'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/xnl/v/b/soc/instrument' #   79%
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/xnl/v/b/soc/instrument' #   79%
     name: 'Leaf SoC Dashboard'
+    state_class: 'measurement'
     value_template: '{{ value|round(2) }}'
     unit_of_measurement: '%'
     #icon: 'mdi:'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/xnl/v/b/soc/newcar' #   47.6868%
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/xnl/v/b/soc/newcar' #   47.6868%
     name: 'Leaf New Car SoC'
+    state_class: 'measurement'
     value_template: '{{ value|round(2) }}'
     unit_of_measurement: '%'
     #icon: 'mdi:'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/xnl/v/b/soc/nominal' #   78.8%
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/xnl/v/b/soc/nominal' #   78.8%
     name: 'Leaf Nominal SoC'
+    state_class: 'measurement'
     value_template: '{{ value|round(2) }}'
     unit_of_measurement: '%'
     #icon: 'mdi:'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/xnl/v/b/soh' #   59%
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/xnl/v/b/soh' #   59%
     name: 'Leaf Battery Health'
+    state_class: 'measurement'
     value_template: '{{ value|round(2) }}'
     unit_of_measurement: '%'
     #icon: 'mdi:'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/xnl/v/b/soh/instrument' #   59%
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/xnl/v/b/soh/instrument' #   59%
     name: 'Leaf Battery Health Instrument'
+    state_class: 'measurement'
     value_template: '{{ value|round(2) }}'
     unit_of_measurement: '%'
     #icon: 'mdi:'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/xnl/v/b/soh/newcar' #   59.3256%
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/xnl/v/b/soh/newcar' #   59.3256%
     name: 'Leaf Battery Health Newcar'
+    state_class: 'measurement'
     value_template: '{{ value|round(2) }}'
     unit_of_measurement: '%'
     #icon: 'mdi:'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/xnl/v/b/type' #   1
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/xnl/v/b/type' #   1
     name: 'Leaf Battery Type'
+    state_class: 'measurement'
     value_template: '{{ value|int }}'
     unit_of_measurement: ''
     #icon: 'mdi:'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/xnl/v/c/chargebars' #   0
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/xnl/v/c/chargebars' #   0
     name: 'Leaf Charge Bars'
+    state_class: 'measurement'
     value_template: '{{ value|round(2) }}'
     unit_of_measurement: ''
     #icon: 'mdi:'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/xnl/v/c/chargeminutes3kW' #   0
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/xnl/v/c/chargeminutes3kW' #   0
     name: 'Leaf Charge Minutes 3kW'
+    state_class: 'measurement'
     value_template: '{{ value|round(2) }}'
     unit_of_measurement: 'min'
     #icon: 'mdi:'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/xnl/v/c/count/l0l1l2' #   0
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/xnl/v/c/count/l0l1l2' #   0
     name: 'Leaf Charger L0/L1/L2'
+    state_class: 'measurement'
     value_template: '{{ value|round(2) }}'
     unit_of_measurement: ''
     #icon: 'mdi:'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/xnl/v/c/count/qc' #   0
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/xnl/v/c/count/qc' #   0
     name: 'Leaf Charger Count QC'
+    state_class: 'measurement'
     value_template: '{{ value|round(2) }}'
     unit_of_measurement: ''
     #icon: 'mdi:'
 
-  # - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/xnl/v/c/duration' #   45,60,105,5,5,5Min
+  # - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/xnl/v/c/duration' #   45,60,105,5,5,5Min
   #   name: 'Leaf Charge Duration'
+  #   state_class: 'measurement'
   #   value_template: '{{ value|round(1) }}'
   #   unit_of_measurement: 'min'
   #   #icon: 'mdi:'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/xnl/v/c/duration' #   45,60,105,5,5,5Min
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/xnl/v/c/duration' #   45,60,105,5,5,5Min
     name: 'Leaf Charge Duration L2'
+    state_class: 'measurement'
     value_template: '{{ value.split(",")[0] }}'
     unit_of_measurement: 'min'
     icon: 'mdi:battery-clock'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/xnl/v/c/duration' #   45,60,105,5,5,5Min
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/xnl/v/c/duration' #   45,60,105,5,5,5Min
     name: 'Leaf Charge Duration L1'
+    state_class: 'measurement'
     value_template: '{{ value.split(",")[1] }}'
     unit_of_measurement: 'min'
     icon: 'mdi:battery-clock'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/xnl/v/c/duration' #   45,60,105,5,5,5Min
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/xnl/v/c/duration' #   45,60,105,5,5,5Min
     name: 'Leaf Charge Duration L0'
+    state_class: 'measurement'
     value_template: '{{ value.split(",")[2] }}'
     unit_of_measurement: 'min'
     icon: 'mdi:battery-clock'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/xnl/v/c/duration' #   45,60,105,5,5,5Min
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/xnl/v/c/duration' #   45,60,105,5,5,5Min
     name: 'Leaf Charge Duration Range L2'
+    state_class: 'measurement'
     value_template: '{{ value.split(",")[3] }}'
     unit_of_measurement: 'min'
     icon: 'mdi:battery-clock'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/xnl/v/c/duration' #   45,60,105,5,5,5Min
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/xnl/v/c/duration' #   45,60,105,5,5,5Min
     name: 'Leaf Charge Duration Range L1'
+    state_class: 'measurement'
     value_template: '{{ value.split(",")[4] }}'
     unit_of_measurement: 'min'
     icon: 'mdi:battery-clock'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/xnl/v/c/duration' #   45,60,105,5,5,5Min
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/xnl/v/c/duration' #   45,60,105,5,5,5Min
     name: 'Leaf Charge Duration Range L0'
+    state_class: 'measurement'
     value_template: '{{ value.split(",")[5] }}'
     unit_of_measurement: 'min'
     icon: 'mdi:battery-clock'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/event' #   gps.sq.good
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/event' #   gps.sq.good
     name: 'Leaf Event'
     #icon: 'mdi:'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/xnl/v/c/event/notification' #   reset
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/xnl/v/c/event/notification' #   reset
     name: 'Leaf Charger Event Notification'
     #icon: 'mdi:'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/xnl/v/c/event/reason' #
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/xnl/v/c/event/reason' #
     name: 'Leaf Charger Event Reason'
     #icon: 'mdi:'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/xnl/v/c/limit/reason' #   normal
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/xnl/v/c/limit/reason' #   normal
     name: 'Leaf Charger Limit Reason'
     #icon: 'mdi:'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/xnl/v/c/quick' #   0
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/xnl/v/c/quick' #   0
     name: 'Leaf Charger Quick Level'
+    state_class: 'measurement'
     value_template: '{{ value|int }}'
     unit_of_measurement: ''
     #icon: 'mdi:'
 
-  - state_topic: 'ovms/[mqtt-user]/[CAR-ID]/metric/xnl/v/c/state/previous' #   timerwait
+  - state_topic: 'ovms/[mqtt-client]/[car-id]/metric/xnl/v/c/state/previous' #   timerwait
     name: 'Leaf Charger Previous State'
     #icon: 'mdi:'
 
